@@ -117,5 +117,22 @@ public class EspetaculosControllerTest {
 
 		assertThat(sessao.getIngressosDisponiveis(), is(2));
 	}
+	
+	@Test
+	public void deveReservarSeASessaoTemIngressosIguaisAoNumeroDaReserva() {
+		Espetaculo espetaculo = new Espetaculo();
+		espetaculo.setTipo(TipoDeEspetaculo.CINEMA);
+		
+		Sessao sessao = new Sessao();
+		sessao.setPreco(new BigDecimal("10.00"));
+		sessao.setTotalIngressos(5);
+		sessao.setEspetaculo(espetaculo);
+		
+		when(agenda.sessao(1234L)).thenReturn(sessao);
+		
+		controller.reserva(1234L, 5);
+		
+		assertThat(sessao.getIngressosDisponiveis(), is(0));
+	}
 
 }
